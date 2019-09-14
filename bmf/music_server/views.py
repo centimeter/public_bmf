@@ -3,5 +3,6 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    	return render(request,'homepage.html')
+	temp = request.build_absolute_uri()
+	return render(request,'homepage.html', {'abs_url': temp})
 	#return HttpResponse("music server index! hello world")
