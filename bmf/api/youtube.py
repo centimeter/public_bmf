@@ -2,9 +2,7 @@ from apiclient import APIClient
 from .globals import tracks
 import json
 
-YOUTUBE_API_ACCESS_KEY = "AIzaSyCRXGqKsNgRJ2vbrzGnCDp6NLq9ot8_WhY"
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
+YOUTUBE_API_ACCESS_KEY = "wow another secret"
 
 class NoTracksFoundException(Exception):
     pass
