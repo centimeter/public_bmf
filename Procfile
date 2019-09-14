@@ -1,1 +1,1 @@
-web: gunicorn better-music-fix.wsgi --log-file -
+web: gunicorn --pythonpath bmf better_music_fix.wsgi --log-file -
