@@ -1,6 +1,7 @@
 <script type="text/javascript">
 	console.log("dostuff is working");
 	var songs = [];
+	var client_id = ""
 	//the path
 	var path = "{{abs_url|escapejs}}"
 	//get a kerb so a client_id can be generated
@@ -10,8 +11,7 @@
 	Http.open("GET", client_url);
 	Http.send();
 	Http.onreadystatechange = (e) => {
-	  	console.log(Http.responseText)
-	}
+	  	client_id = Http.responseText;	}
 	//get the initial list of songs
 	const Http1 = new XMLHttpRequest();
 	const get_songs_url= path + "api/get_all/";
@@ -57,9 +57,34 @@
 			},
 			"rating": 10
 		}
-
 	];
 	for(var i = 0; i<samplesongs.length; i++){
 		$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\">" +  samplesongs[i].rating + " " + samplesongs[i].name + "\n" + samplesongs[i].client.kerberos + "</div>");
 	}
+
+	$("#song-submit").click(
+		function() {
+			let Http2 = new XMLHttpRequest();
+			//parse the track id from whats in the input box
+			console.log($("#song-url").val())
+			var track_id = $("#song-url").val();
+			if(track_id.includes("youtu")){
+				track_id = track_id.split("/").pop();
+			}
+			if(track_id.includes("v=")){
+				track_id = track_id.split("=").pop();
+			}
+			//check for validity
+			if(track_id != ""){
+				const client_url= path + "api/insert/" + client_id + "/" + track_id + "/";
+				Http2.open("GET", client_url);
+				Http2.send();
+				Http2.onreadystatechange = (e) => {
+				  	console.log(Http.responseText)
+				}
+			} else {
+				window.alert("not a valid youtube URL, try again");
+			}
+		}
+		);
 </script>
