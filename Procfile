@@ -1,1 +1,1 @@
-web: gunicorn better_music_fix.wsgi --log-file -
+web: gunicorn better-music-fix.wsgi --log-file -
