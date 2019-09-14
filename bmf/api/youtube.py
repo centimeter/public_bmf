@@ -6,10 +6,8 @@ YOUTUBE_API_ACCESS_KEY = "AIzaSyCRXGqKsNgRJ2vbrzGnCDp6NLq9ot8_WhY"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
-class YoutubeApiError(Exception):
-    def __init__(self, code, message):
-        self.code = code
-        self.message = message
+class NoTracksFoundException(Exception):
+    pass
 
 class YoutubeAPI(APIClient):
     BASE_URL = "https://www.googleapis.com/youtube/v3/"
@@ -26,6 +24,10 @@ class Track():
     def __init__(self, track_id):
         self.track_id = track_id
         
+        yt_response = youtube.video(track_id)
+        if yt_response['pageInfo']['totalResults'] == 0:
+            raise NoTracksFoundException( "No tracks were found for track_id: " + track_id)
+
         data = youtube.video(track_id)['items'][0]['snippet']
         self.title = data['title']
         self.video_url = "https://www.youtube.com/watch?v=" + track_id
