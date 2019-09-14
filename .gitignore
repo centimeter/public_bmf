@@ -7,4 +7,6 @@ pyvenv.cfg
 lib/
 pip-selfcheck.json
 share/
+db.sqlite3
+secrets.json
 
