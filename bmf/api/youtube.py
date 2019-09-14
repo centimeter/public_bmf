@@ -1,8 +1,9 @@
 from apiclient import APIClient
 from .globals import tracks
 import json
+import os 
 
-YOUTUBE_API_ACCESS_KEY = "wow another secret"
+YOUTUBE_API_ACCESS_KEY = os.environ["YOUTUBE_SECRET_KEY"]
 
 class NoTracksFoundException(Exception):
     pass
