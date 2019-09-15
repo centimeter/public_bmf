@@ -10,9 +10,13 @@ def http_request(func):
         if 'client_id' in kwargs:
             client_id = kwargs['client_id']
             if client_id not in clients:
-                return JsonResponse('error: not found client_id: ' + client_id)
+                print(client_id)
+                print(clients)
+                print("error")
+                return JsonResponse('error: not found client_id: ' + client_id, safe=False)
 
         output = func(request, *args, **kwargs)
+        print(output)
         return JsonResponse(output, encoder=api.ComplexEncoder, safe=False)
     return wrapper
 

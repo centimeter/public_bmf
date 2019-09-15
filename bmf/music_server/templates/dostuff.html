@@ -12,8 +12,12 @@
 	const client_url= path + "api/register_client/" + kerb + "/";
 	Http.open("GET", client_url);
 	Http.send();
-	Http.onreadystatechange = (e) => {
-	  	client_id = Http.responseText;	}
+	Http.onload = (e) => {
+		console.log("asdf");
+		console.log(Http.responseText);
+		console.log(JSON.parse(Http.responseText));
+	  	client_id = JSON.parse(Http.responseText);	}
+
 	//get the initial list of songs
 	const Http1 = new XMLHttpRequest();
 	const get_songs_url= path + "api/get_all/";
@@ -63,20 +67,27 @@
 		
 	}
 ] 
-	Http1.onreadystatechange = (e) => {
-	  	console.log(Http1.responseText);
-	  	//songs = JSON.parse(Http1.responseText);
-	  	if(!main_loaded){
-		  	for(var i = 0; i<songs.length; i++){
-				console.log(songs[i]);
-				$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + songs[i].track.rating + "</div><div class = \"song-name col-sm-7\">" + songs[i].track.name + "</div></div>");
-				}
-			main_loaded = true;
+	Http1.onload = (e) => {
+	  	songs = JSON.parse(Http1.responseText);
+	  	console.log("songs");
+	  	console.log(songs);
+	  	for(var i = 0; i<songs.length; i++){
+			console.log(songs[i]);
+			var rating =  songs[i].rating;
+			if(isNaN(rating)){
+				rating = "N/A";
+			}
+			$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + rating + "</div><div class = \"song-name col-sm-7\">" + songs[i].track.title + "</div></div>");
+				
 	  	}
 
 	}
-
-
+	$(document).on('click','#upvote',function(){
+    	console.log("upvote")
+	});
+	$(document).on('click','#downvote',function(){
+    	console.log("downvote")
+	});
 	$("#song-submit").click(
 		function() {
 			let Http2 = new XMLHttpRequest();
@@ -94,7 +105,7 @@
 				const client_url= path + "api/insert/" + client_id + "/" + track_id + "/";
 				Http2.open("GET", client_url);
 				Http2.send();
-				Http2.onreadystatechange = (e) => {
+				Http2.onload = (e) => {
 				  	console.log(Http.responseText)
 				}
 			} else {
