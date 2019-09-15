@@ -77,15 +77,23 @@
 			if(isNaN(rating)){
 				rating = "N/A";
 			}
-			$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + rating + "</div><div class = \"song-name col-sm-7\">" + songs[i].track.title + "</div></div>");
+			$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;overflow: auto;\"style=\"border:1px solid black;\"><div class=col-sm-3><img src=\""+ songs[i].track.thumbnail_url+ "\"></div><span id = " + songs[i].track.track_id +" class=\"upvote glyphicon glyphicon-arrow-up\"></span><span id=" + songs[i].track.track_id + " class=\"downvote glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + rating + "</div><div class = \"song-name col-sm-7\">" + songs[i].track.name + "");
 				
 	  	}
 
 	}
-	$(document).on('click','#upvote',function(){
-    	console.log("upvote")
+	$(document).on('click','.upvote',function(){
+    	var this_vid_id =  $(this).attr('id');
+    	var upvote_url = "api/upvote/" + client_id + "/" + this_vid_id + "/";
+    	console.log(upvote_url)
+    	let Http3 = new XMLHttpRequest();
+    	Http3.open("GET", upvote_url);
+				Http3.send();
+				Http3.onload = (e) => {
+				  	console.log(Http.responseText)
+				}
 	});
-	$(document).on('click','#downvote',function(){
+	$(document).on('click','.downvote',function(){
     	console.log("downvote")
 	});
 	$("#song-submit").click(
