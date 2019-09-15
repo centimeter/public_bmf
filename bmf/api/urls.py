@@ -7,5 +7,6 @@ urlpatterns = [
     path('insert/<str:client_id>/<str:track_id>/', views.insert, name='insert'),
     path('upvote/<str:client_id>/<str:track_id>/', views.upvote, name='upvote'),
     path('downvote/<str:client_id>/<str:track_id>/', views.downvote, name='downvote'),
-    path('register_client/<str:kerberos>/', views.register_client, name='register')
+    path('register_client/<str:kerberos>/', views.register_client, name='register'),
+    path('delete/<str:track_id>/', views.delete, name='delete')
 ]

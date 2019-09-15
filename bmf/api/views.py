@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .globals import clients
 
+import json
 from . import api
 
 def http_request(func):
@@ -9,10 +10,10 @@ def http_request(func):
         if 'client_id' in kwargs:
             client_id = kwargs['client_id']
             if client_id not in clients:
-                return HttpResponse('error')
+                return JsonResponse('error: not found client_id: ' + client_id)
 
         output = func(request, *args, **kwargs)
-        return HttpResponse(output)
+        return JsonResponse(output, encoder=api.ComplexEncoder, safe=False)
     return wrapper
 
 # Create your views here.
@@ -23,6 +24,10 @@ def get_all(request):
 @http_request
 def insert(request, client_id, track_id):
     return api.insert(client_id, track_id)
+
+@http_request
+def delete(request, track_id):
+    return api.delete(track_id)
 
 @http_request
 def upvote(request, client_id, track_id):

@@ -33,7 +33,12 @@ class Track():
         self.thumbnail_url = data['thumbnails']['default']['url']
 
     def __str__(self):
-        return str({'track_id': self.track_id, 'title': self.title, 'video_url': self.video_url, 'thumbnail_url': self.thumbnail_url})
+        return str({
+            'track_id': self.track_id,
+            'title': self.title,
+            'video_url': self.video_url,
+            'thumbnail_url': self.thumbnail_url
+        })
 
 def video(track_id):
     if track_id not in tracks:

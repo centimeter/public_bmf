@@ -1,9 +1,11 @@
-from .globals import *
+from .globals import clients, clients_lock, playlist, playlist_lock, kerberoi
 from . import youtube
 from threading import Lock
 import queue
 import random
 import string
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 class Client():
     def __init__(self, client_id, kerberos):
@@ -48,6 +50,29 @@ class ClientRequestedTracks():
     def __str__(self):
         return str({'client': str(self.client), 'track': str(self.track)})
 
+class ComplexEncoder(DjangoJSONEncoder):
+    def default(self, obj): # pylint: disable=E0202
+        if isinstance(obj, ClientRequestedTracks):
+            return {
+                'track': obj.track,
+                'client': obj.client
+            }
+        if isinstance(obj, Client):
+            return {
+                'client_id': obj.client_id,
+                'kerberos': obj.kerberos
+            }
+        if isinstance(obj, youtube.Track):
+            return {
+                'track_id': obj.track_id,
+                'title': obj.title,
+                'video_url': obj.video_url,
+                'thumbnail_url': obj.thumbnail_url
+            }
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)
+
+
 def get_all():
     return sorted(playlist.values(), key=lambda x: x.score, reverse=True)
 
@@ -86,7 +111,7 @@ def downvote(client_id, track_id):
         playlist[track_id].downvote(client_id, track_id)
 
     return get_all()
-
+'''
 def delete(client_id, track_id):
     if track_id not in playlist:
          return get_all()
@@ -95,6 +120,15 @@ def delete(client_id, track_id):
         client = clients[client_id]
         client.make_request()
 
+        playlist.pop(track_id)
+        return get_all()
+'''
+
+def delete(track_id):
+    if track_id not in playlist:
+         return get_all()
+    
+    with playlist_lock:
         playlist.pop(track_id)
         return get_all()
 

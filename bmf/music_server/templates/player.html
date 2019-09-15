@@ -1,1 +1,13 @@
-hell world
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player">no songs in playlist yet</div>
+
+    <div id="playlist"></div>
+    <button id="refresh">Refresh Playlist</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'scripts/player.js' %}"></script>
+  </body>
+</html>
