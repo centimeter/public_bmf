@@ -1,12 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+  <head>
+    <link href="{% static 'css/main.css' %}"rel="stylesheet" type="text/css"/>
+  </head>
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player">no songs in playlist yet</div>
 
-    <div id="playlist"></div>
-    <button id="refresh">Refresh Playlist</button>
+    <h2>Currently Playing</h2>
+    <div id="current"></div>
+    <h2>Up Next</h2>
+    <div id="songs"></div>
+    <button class="btn btn-default" id="refresh">Refresh Playlist</button>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="{% static 'scripts/player.js' %}"></script>
   </body>

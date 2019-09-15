@@ -10,8 +10,6 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 var playlist;
 function onYouTubeIframeAPIReady() {
-  loadVideos()
-  
   if(playlist.length > 0) {
     player = new YT.Player('player', {
       height: '390',
@@ -35,9 +33,9 @@ function onPlayerReady(event) {
 //    the player should play for six seconds and then stop.
 var done = false;
 function onPlayerStateChange(event) {
-  console.log(event)
   if (event.data == YT.PlayerState.ENDED) {
-    removeTop();
+    removeCurrent();
+    console.log("playing next");
     loadVideos(function() {
       if(playlist.length > 0) {
         player.loadVideoById(playlist[0].track.track_id);
@@ -56,26 +54,33 @@ function loadVideos(callback) {
 
 }
 
-function updatePlaylist(data) {
-  document.getElementById('playlist').innerHTML = data;
+function updatePlaylist(playlist) {
+  $("#current").empty();
+  $("#songs").empty();
+  for(var i = 0; i < playlist.length; i++) {
+    var track = playlist[i].track;
+    if (i == 0) {
+      $("#current").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + playlist[i].rating + "</div><div class = \"song-name col-sm-7\">" + track.name + "</div></div>");
+    } else {
+      $("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + playlist[i].rating + "</div><div class = \"song-name col-sm-7\">" + track.name + "</div></div>");
+    }
+  }
 }
 
-function removeTop() {
+function removeCurrent() {
   remove(playlist[0].track.track_id);
 }
 
 function remove(track_id) {
   console.log("removing track: " + track_id)
   var removeUrl = "/api/delete/" + track_id + "/"
-  $.get(removeUrl, function(data, status) {
-    playlist = data;
-    console.log(playlist);
-    updatePlaylist(playlist);
-  });
+  $.get(removeUrl);
 }
 
 document.getElementById("refresh").onclick = function() {
-  loadVideos();
+  console.log("refreshing");
+  loadVideos(() => {});
 }
 
-loadVideos()
+console.log("onload");
+loadVideos(() => {})

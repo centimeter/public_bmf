@@ -55,7 +55,8 @@ class ComplexEncoder(DjangoJSONEncoder):
         if isinstance(obj, ClientRequestedTracks):
             return {
                 'track': obj.track,
-                'client': obj.client
+                'client': obj.client,
+                'rating': obj.score
             }
         if isinstance(obj, Client):
             return {
@@ -65,7 +66,7 @@ class ComplexEncoder(DjangoJSONEncoder):
         if isinstance(obj, youtube.Track):
             return {
                 'track_id': obj.track_id,
-                'title': obj.title,
+                'name': obj.title,
                 'video_url': obj.video_url,
                 'thumbnail_url': obj.thumbnail_url
             }
