@@ -35,7 +35,7 @@ class Track():
     def __str__(self):
         return str({
             'track_id': self.track_id,
-            'title': self.title,
+            'name': self.title,
             'video_url': self.video_url,
             'thumbnail_url': self.thumbnail_url
         })
