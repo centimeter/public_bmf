@@ -67,24 +67,22 @@
     	var this_vid_id =  $(this).attr('id');
     	var upvote_url = "api/upvote/" + client_id + "/" + this_vid_id + "/";
     	console.log(upvote_url)
-    	let Http3 = new XMLHttpRequest();
-    	Http3.open("GET", upvote_url);
-		Http3.send();
-		loadVideos(() => {});
+    	$.get(upvote_url, function(data) {
+			loadVideos(() => {});
+		});
 	});
+
 	$(document).on('click','.downvote',function(){
     	console.log("downvote")
     	var this_vid_id =  $(this).attr('id');
     	var downvote_url = "api/downvote/" + client_id + "/" + this_vid_id + "/";
     	console.log(downvote_url)
-    	let Http3 = new XMLHttpRequest();
-    	Http3.open("GET", downvote_url);
-		Http3.send();
-		loadVideos(() => {});
+		$.get(downvote_url, function(data) {
+			loadVideos(() => {});
+		})
 	});
 	$("#song-submit").click(
 		function() {
-			let Http2 = new XMLHttpRequest();
 			//parse the track id from whats in the input box
 			console.log($("#song-url").val())
 			var track_id = $("#song-url").val();
@@ -97,12 +95,12 @@
 			//check for validity
 			if(track_id != ""){
 				const client_url= path + "api/insert/" + client_id + "/" + track_id + "/";
-				Http2.open("GET", client_url);
-				Http2.send();
+				$.get(client_url, function(data) {
+					loadVideos(() => {});
+				})
 			} else {
 				window.alert("not a valid youtube URL, try again");
 			}
-			loadVideos(() => {});
 		}
 	);
 	$("#refresh").click(function () {
