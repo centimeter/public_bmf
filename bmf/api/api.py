@@ -103,13 +103,13 @@ def register_client(kerberos):
 
 def upvote(client_id, track_id):
     if client_id in clients and track_id in playlist:
-        playlist[track_id].upvote(client_id, track_id)
+        playlist[track_id].upvote(client_id)
 
     return get_all()
 
 def downvote(client_id, track_id):
     if client_id in clients and track_id in playlist:
-        playlist[track_id].downvote(client_id, track_id)
+        playlist[track_id].downvote(client_id)
 
     return get_all()
 '''
