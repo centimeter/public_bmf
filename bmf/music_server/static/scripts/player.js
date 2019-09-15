@@ -51,7 +51,6 @@ function loadVideos(callback) {
     updatePlaylist(playlist);
     callback();
   });
-
 }
 
 function updatePlaylist(playlist) {
@@ -77,10 +76,10 @@ function remove(track_id) {
   $.get(removeUrl);
 }
 
-document.getElementById("refresh").onclick = function() {
+$("#refresh").click(function() {
   console.log("refreshing");
   loadVideos(() => {});
-}
+});
 
 console.log("onload");
 loadVideos(() => {})
