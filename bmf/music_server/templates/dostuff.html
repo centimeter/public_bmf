@@ -1,6 +1,8 @@
 <script type="text/javascript">
 	console.log("dostuff is working");
 	var songs = [];
+	//keeps track of whether or not the main list of songs has been loaded
+	var main_loaded = false;
 	var client_id = ""
 	//the path
 	var path = "{{abs_url|escapejs}}"
@@ -17,50 +19,63 @@
 	const get_songs_url= path + "api/get_all/";
 	Http1.open("GET", get_songs_url);
 	Http1.send();
+	songs = [
+	{
+		"track":{
+		"track_id":"LzdHoFObxrg",
+		"name":"The Deadener",
+		"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
+		"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
+		"rating": 5
+		},
+		"client": {
+			"client_id": "asdfa4543",
+			"kerberos": "ctraweek"
+		},
+		
+	},
+	{
+		"track":{
+		"track_id":"LzdHoFObxrg",
+		"name":"Second Sun",
+		"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
+		"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
+		"rating": 5
+		},
+		"client": {
+			"client_id": "ajhsdfa4543",
+			"kerberos": "georg"
+		},
+		
+	},
+	{
+		"track":{
+		"track_id":"LzdHoFObxrg",
+		"name":"Never Gonna Give You Up",
+		"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
+		"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
+		"rating": 5
+		},
+		"client": {
+			"client_id": "afdaf4",
+			"kerberos": "beans"
+		},
+		
+	}
+] 
 	Http1.onreadystatechange = (e) => {
 	  	console.log(Http1.responseText);
-	  	songs = Http1.responseText;
+	  	//songs = JSON.parse(Http1.responseText);
+	  	if(!main_loaded){
+		  	for(var i = 0; i<songs.length; i++){
+				console.log(songs[i]);
+				$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\"><span id = \"upvote\" class=\"glyphicon glyphicon-arrow-up\"></span><span id=\"downvote\" class=\"glyphicon glyphicon-arrow-down\"></span><div class=\"song-rating col-sm-1\">" + songs[i].track.rating + "</div><div class = \"song-name col-sm-7\">" + songs[i].track.name + "</div></div>");
+				}
+			main_loaded = true;
+	  	}
+
 	}
 
-	//this is a dummy var for testing, a list of song objects
-	var samplesongs = [
-		{
-			"track_id":"LzdHoFObxrg",
-			"name":"The Deadener",
-			"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
-			"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
-			"client": {
-				"client_id": "asdfa4543",
-				"kerberos": "ctraweek"
-			},
-			"rating": 5
-		},
-		{
-			"track_id":"LzdHoFObxrg",
-			"name":"The Deadener",
-			"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
-			"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
-			"client": {
-				"client_id": "asdfa4543",
-				"kerberos": "ctraweek"
-			},
-			"rating": 6
-		},
-		{
-			"track_id":"LzdHoFObxrg",
-			"name":"The Deadener",
-			"video_url":"https://www.youtube.com/watch?v=LzdHoFObxrg",
-			"thumbnail_url": "https://i.ytimg.com/vi/LzdHoFObxrg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBXnr0IyyCYREWzl4uRW_pOJD8nBg",
-			"client": {
-				"client_id": "afsdghj",
-				"kerberos": "georg"
-			},
-			"rating": 10
-		}
-	];
-	for(var i = 0; i<samplesongs.length; i++){
-		$("#songs").append("<div class=\"list-group-item\" style=\"border:1px solid black;\"style=\"border:1px solid black;\">" +  samplesongs[i].rating + " " + samplesongs[i].name + "\n" + samplesongs[i].client.kerberos + "</div>");
-	}
 
 	$("#song-submit").click(
 		function() {
